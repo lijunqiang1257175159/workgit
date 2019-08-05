@@ -65,7 +65,7 @@
 
         <div id="gade">
             操作说明：<br>w:跳跃(不要长按)<br>s:&nbsp;蹲下(松手站起)<br>游戏结束后，请刷新重新开始游戏
-            <br>默认游戏环境为火狐浏览器（若ie浏览器出现bug一概不理会）
+            <br>本游戏环境未对ie做兼容性处理，若出现bug一概不理会
             <p>当前得分：0</p>
             <span>最高分：0</span>
         </div>
@@ -178,7 +178,7 @@
         move2(550, Math.round(Math.random()));
         move3(700, Math.round(Math.random()));
     }
-    setTimeout("move()", 2000);
+    setTimeout("move()", 5000);
 
     //人物
     $("body").on("keydown", function (e) {
@@ -228,7 +228,7 @@
                 max = count / 2;
                 $("#gade span").html("最高分：" + max);
                 window.localStorage.setItem("max", max);
-                alert("记录什么的，不是随便就破的吗");
+                alert("给记录点面子好吗，别动不动就破人家");
             }
             clearInterval(timer);
             window.location.reload();
@@ -242,7 +242,7 @@
                 max = count / 2;
                 $("#gade span").html("最高分：" + max);
                 window.localStorage.setItem("max", max);
-                alert("又破记录了，太简单了啊");
+                alert("又破记录了，简直无敌了呀");
             }
             clearInterval(timer);
             window.location.reload();
