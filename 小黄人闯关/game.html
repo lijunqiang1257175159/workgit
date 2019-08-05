@@ -223,6 +223,7 @@
 
     function panduan(distance, num) {
         if ((distance >= 150) && (distance <= 250) && (num == 0) && ($("#person").css("height").split("px")[0] >= 40)) {
+            clearInterval(timer);
             alert("游戏结束\n当前得分为：" + count / 2);
             if (count / 2 > max) {
                 max = count / 2;
@@ -230,13 +231,13 @@
                 window.localStorage.setItem("max", max);
                 alert("给记录点面子好吗，别动不动就破人家");
             }
-            clearInterval(timer);
             window.location.reload();
         } else if (distance == 149) {
             count++;
             $("#gade p").html("当前得分：" + count / 2);
         }
         if ((distance >= 150) && (distance <= 250) && (num == 1) && ($("#person").css("top").split("px")[0] > 340)) {
+            clearInterval(timer);
             alert("游戏结束\n当前得分为：" + count / 2);
             if (count / 2 > max) {
                 max = count / 2;
@@ -244,7 +245,6 @@
                 window.localStorage.setItem("max", max);
                 alert("又破记录了，简直无敌了呀");
             }
-            clearInterval(timer);
             window.location.reload();
         } else if (distance == 149) {
             count++;
