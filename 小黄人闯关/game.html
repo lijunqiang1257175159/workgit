@@ -95,12 +95,12 @@
             $("#hinder1").css("top", "0px");
         }
     }
-    var timer;
+     
 
     function move1(distance, num) {
         hindera(num);
         // 障碍物向左移动
-        timer = setInterval(function () {
+        var timer = setInterval(function () {
             if (distance > 100) {
                 $("#hinder1").css("left", distance + "px");
                 distance--;
@@ -111,7 +111,7 @@
                 hindera(num);
             }
 
-            panduan(distance, num);
+            panduan(distance, num, timer);
         }, 10);
     }
 
@@ -141,7 +141,7 @@
                 num = Math.round(Math.random());
                 hinderb(num);
             }
-            panduan(distance + 50, num);
+            panduan(distance + 50, num, timer);
         }, 10);
     }
 
@@ -168,7 +168,7 @@
                 num = Math.round(Math.random());
                 hinderc(num);
             }
-            panduan(distance + 100, num);
+            panduan(distance + 100, num, timer);
         }, 10);
     }
 
@@ -221,7 +221,7 @@
     // 计分
     var count = 0;
 
-    function panduan(distance, num) {
+    function panduan(distance, num, timer) {
         if ((distance >= 150) && (distance <= 250) && (num == 0) && ($("#person").css("height").split("px")[0] >= 40)) {
             clearInterval(timer);
             alert("游戏结束\n当前得分为：" + count / 2);
