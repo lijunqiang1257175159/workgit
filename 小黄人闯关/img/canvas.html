@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="jquery.js"></script>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        #canvas{
+            width: 100%;
+            height: 300px;
+            margin-top: 150px;
+            background-color: #ffccff;
+            display: flex;
+        }
+        .hinder{
+            width: 50px;
+            height: 0;
+            background-color: skyblue;
+            position: relative;
+        }
+
+    </style>
+</head>
+<body>
+    <div id="canvas">
+        <div id="hinder1" class="hinder"></div>
+        <div id="hinder2" class="hinder"></div>
+        <div id="hinder3" class="hinder"></div>
+    </div>
+</body>
+<script src="jquery.js"></script>
+<script>
+    // 障碍物的生成与移动
+    //第一个障碍物
+    function hindera(){
+        var num1=Math.round(Math.random());
+        // console.log(num1);
+        $("#hinder1").css("left","400px");
+        if(num1==1){
+            $("#hinder1").css("height","50px");
+            $("#hinder1").css("top","250px"); 
+        }
+        else{
+            $("#hinder1").css("height","250px");
+            $("#hinder1").css("top","0px");
+        }
+    }
+    function move1(){
+        hindera();
+        var distance1=400;
+        setInterval(function(){
+            if(distance1>=100){
+                $("#hinder1").css("left",distance1+"px");
+                distance1--;
+            }
+            else{
+                distance1=700;
+                hindera();
+            }
+        },10);
+    }
+
+    //第二个障碍物
+    function hinderb(){
+        var num2=Math.round(Math.random());
+        $("#hinder2").css("left","400px");
+        if(num2==1){
+            $("#hinder2").css("height","50px");
+            $("#hinder2").css("top","250px"); 
+        }
+        else{
+            $("#hinder2").css("height","250px");
+            $("#hinder2").css("top","0px");
+        }
+    }
+    function move2(){
+        hinderb();
+        var distance2=550;
+        setInterval(function(){
+            if(distance2>=100){
+                $("#hinder2").css("left",distance2+"px");
+                distance2--;
+            }
+            else{
+                distance2=700;
+                hinderb()
+            }
+        },10);
+    }
+
+    // 第三个障碍物
+    function hinderc(){
+        var num3=Math.round(Math.random());
+        $("#hinder3").css("left","400px");
+        if(num3==1){
+            $("#hinder3").css("height","50px");
+            $("#hinder3").css("top","250px"); 
+        }
+        else{
+            $("#hinder3").css("height","250px");
+            $("#hinder3").css("top","0px");
+        }
+    }
+    function move3(){
+        hinderc();
+        var distance3=700;
+        setInterval(function(){
+            if(distance3>=100){
+                $("#hinder3").css("left",distance3+"px");
+                distance3--;
+            }
+            else{
+                distance3=700;
+                hinderc();
+            }
+        },10);
+    }
+    
+    // 移动
+    function move(){
+        move1();
+        move2();
+        move3();
+    }
+    move();
+</script>
+</html>

@@ -1,0 +1,257 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>小黄人闯关(from:木子)</title>
+    <link rel="shortcut icon" href="./img/person.jpg">
+    <script src="jquery.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        #canvas {
+            width: 100%;
+            height: 290px;
+            margin-top: 150px;
+            background: url(img/background.jpg);
+            display: flex;
+
+        }
+
+        .hinder {
+            width: 50px;
+            height: 0;
+            background: url(img/hinder.jpg);
+            position: relative;
+        }
+
+        #person {
+            width: 50px;
+            height: 50px;
+            background: url(img/person.jpg);
+            margin-left: 200px;
+            position: absolute;
+            top: 390px;
+        }
+
+        #gade {
+            width: 250px;
+            margin-left: 750px;
+            margin-top: 70px;
+            height: 150px;
+            opacity: 0.5;
+            background-color: #ffccff;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="canvas">
+        <div id="person"></div>
+
+        <!-- 三个障碍物 -->
+
+        <div id="hinder1" class="hinder"></div>
+        <div id="hinder2" class="hinder"></div>
+        <div id="hinder3" class="hinder"></div>
+
+        <!-- 得分和关于游戏的一些说明 -->
+
+        <div id="gade">
+            操作说明：<br>w:跳跃(不要长按)<br>s:&nbsp;蹲下(松手站起)<br>游戏结束后，请刷新重新开始游戏
+            <br>默认游戏环境为火狐浏览器（若ie浏览器出现bug一概不理会）
+            <p>当前得分：0</p>
+            <span>最高分：0</span>
+        </div>
+    </div>
+</body>
+<script src="jquery.js"></script>
+<script>
+    var max;
+    if (window.localStorage.getItem("max") > 0) {
+        max = window.localStorage.getItem("max");
+        $("#gade span").html("最高分：" + max);
+    }else{
+        max=0;
+    }
+
+    // 障碍物的生成与移动
+    //第一个障碍物
+    function hindera(num) {
+        //初始位置
+        $("#hinder1").css("left", "400px");
+        //障碍物的样式
+        if (num == 1) {
+            $("#hinder1").css("height", "50px");
+            $("#hinder1").css("top", "240px");
+        } else {
+            $("#hinder1").css("height", "250px");
+            $("#hinder1").css("top", "0px");
+        }
+    }
+    var timer;
+
+    function move1(distance, num) {
+        hindera(num);
+        // 障碍物向左移动
+        timer = setInterval(function () {
+            if (distance > 100) {
+                $("#hinder1").css("left", distance + "px");
+                distance--;
+
+            } else {
+                distance = 700;
+                num = Math.round(Math.random());
+                hindera(num);
+            }
+
+            panduan(distance, num);
+        }, 10);
+    }
+
+
+
+    //第二个障碍物
+    function hinderb(num) {
+        $("#hinder2").css("left", "400px");
+        if (num == 1) {
+            $("#hinder2").css("height", "50px");
+            $("#hinder2").css("top", "240px");
+        } else {
+            $("#hinder2").css("height", "250px");
+            $("#hinder2").css("top", "0px");
+        }
+    }
+
+    function move2(distance, num) {
+        hinderb(num);
+        var timer = setInterval(function () {
+            if (distance > 50) {
+                $("#hinder2").css("left", distance + "px");
+                distance--;
+
+            } else {
+                distance = 650;
+                num = Math.round(Math.random());
+                hinderb(num);
+            }
+            panduan(distance + 50, num);
+        }, 10);
+    }
+
+    // 第三个障碍物
+    function hinderc(num) {
+        $("#hinder3").css("left", "400px");
+        if (num == 1) {
+            $("#hinder3").css("height", "50px");
+            $("#hinder3").css("top", "240px");
+        } else {
+            $("#hinder3").css("height", "250px");
+            $("#hinder3").css("top", "0px");
+        }
+    }
+
+    function move3(distance, num) {
+        hinderc(num);
+        var timer = setInterval(function () {
+            if (distance >= 0) {
+                $("#hinder3").css("left", distance + "px");
+                distance--;
+            } else {
+                distance = 600;
+                num = Math.round(Math.random());
+                hinderc(num);
+            }
+            panduan(distance + 100, num);
+        }, 10);
+    }
+
+    // 移动
+    function move() {
+        move1(400, Math.round(Math.random()));
+        move2(550, Math.round(Math.random()));
+        move3(700, Math.round(Math.random()));
+    }
+    setTimeout("move()", 2000);
+
+    //人物
+    $("body").on("keydown", function (e) {
+        if (e.keyCode == 83 && $("#person").css("top").split("px")[0] >= 385) {
+            squat();
+        } else if (e.keyCode == 87 && $("#person").css("top").split("px")[0] <= 390 && $("#person").css("top")
+            .split("px")[0] >=
+            385) {
+            jump();
+        }
+    })
+    //跳
+    function jump() {
+        $("#person").animate({
+            "top": "200px",
+            "height": "50px",
+        }, 800, "linear");
+        $("#person").animate({
+            "top": "250px",
+            "height": "50px",
+        }, 250, "linear");
+        $("#person").animate({
+            "top": "390px",
+            "height": "50px",
+        }, 800, "linear");
+    }
+    // 蹲
+    function squat() {
+        $("body").on("keydown", function () {
+            $("#person").css("top", "415px")
+                .css("height", "25px")
+        })
+        $("body").on("keyup", function () {
+            $("#person").css("top", "390px")
+                .css("height", "50px");
+        })
+    }
+
+    //判断是否撞到柱子
+    // 计分
+    var count = 0;
+
+    function panduan(distance, num) {
+        if ((distance >= 150) && (distance <= 250) && (num == 0) && ($("#person").css("height").split("px")[0] >= 40)) {
+            alert("游戏结束\n当前得分为：" + count / 2);
+            if (count / 2 > max) {
+                max = count / 2;
+                $("#gade span").html("最高分：" + max);
+                window.localStorage.setItem("max", max);
+                alert("记录什么的，不是随便就破的吗");
+            }
+            clearInterval(timer);
+            window.location.reload();
+        } else if (distance == 149) {
+            count++;
+            $("#gade p").html("当前得分：" + count / 2);
+        }
+        if ((distance >= 150) && (distance <= 250) && (num == 1) && ($("#person").css("top").split("px")[0] > 340)) {
+            alert("游戏结束\n当前得分为：" + count / 2);
+            if (count / 2 > max) {
+                max = count / 2;
+                $("#gade span").html("最高分：" + max);
+                window.localStorage.setItem("max", max);
+                alert("又破记录了，太简单了啊");
+            }
+            clearInterval(timer);
+            window.location.reload();
+        } else if (distance == 149) {
+            count++;
+            $("#gade p").html("当前得分：" + count / 2);
+        }
+
+    }
+</script>
+
+</html>
