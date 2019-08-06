@@ -192,7 +192,9 @@
         }
     })
     //跳
+    var flag=true;
     function jump() {
+        if(flag){
         $("#person").animate({
             "top": "200px",
             "height": "50px",
@@ -205,6 +207,7 @@
             "top": "390px",
             "height": "50px",
         }, 800, "linear");
+          flag=flase;}  
     }
     // 蹲
     function squat() {
