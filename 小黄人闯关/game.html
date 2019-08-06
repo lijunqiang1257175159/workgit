@@ -200,11 +200,11 @@
         $("#person").animate({
             "top": "250px",
             "height": "50px",
-        }, 800, "linear");
+        }, 250, "linear");
         $("#person").animate({
             "top": "390px",
             "height": "50px",
-        }, 800, "linear");
+        }, 1000, "linear");
     }
     // 蹲
     function squat() {
@@ -226,9 +226,9 @@
         if(num==0){
             if ((distance >= 150) && (distance <= 250) && ($("#person").css("height").split("px")[0] >= 40)) {
                 clearInterval(timer);
-                alert("游戏结束\n当前得分为：" + count / 2);
-                if (count / 2 > max) {
-                    max = count / 2;
+                alert("游戏结束\n当前得分为：" + count);
+                if (count  > max) {
+                    max = count ;
                     $("#gade span").html("最高分：" + max);
                     window.localStorage.setItem("max", max);
                     alert("给记录点面子好吗，别动不动就破人家");
@@ -236,14 +236,14 @@
                 window.location.reload();
             } else if (distance == 149) {
                 count++;
-                $("#gade p").html("当前得分：" + count / 2);
+                $("#gade p").html("当前得分：" + count);
             }
         }else{
             if ((distance >= 150) && (distance <= 250) && ($("#person").css("top").split("px")[0] > 340)) {
                 clearInterval(timer);
-                alert("游戏结束\n当前得分为：" + count / 2);
-                if (count / 2 > max) {
-                    max = count / 2;
+                alert("游戏结束\n当前得分为：" + count);
+                if (count > max) {
+                    max = count ;
                     $("#gade span").html("最高分：" + max);
                     window.localStorage.setItem("max", max);
                     alert("又破记录了，简直无敌了呀");
@@ -251,7 +251,7 @@
                 window.location.reload();
             } else if (distance == 149) {
                 count++;
-                $("#gade p").html("当前得分：" + count / 2);
+                $("#gade p").html("当前得分：" + count );
             }
         }
         
