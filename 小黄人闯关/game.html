@@ -195,6 +195,7 @@
     var flag=true;
     function jump() {
         if(flag){
+            flag=flase;
         $("#person").animate({
             "top": "200px",
             "height": "50px",
@@ -207,7 +208,7 @@
             "top": "390px",
             "height": "50px",
         }, 800, "linear");
-          flag=flase;}  
+          flag=true;}  
     }
     // 蹲
     function squat() {
