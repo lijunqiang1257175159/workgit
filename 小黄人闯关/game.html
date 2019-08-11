@@ -5,9 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>小黄人闯关(from:木子)</title>
-    <link rel="shortcut icon" href="./img/person.jpg">
-    <script src="jquery.js"></script>
+    <title>小黄人闯关(from:木子)</title>.
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -34,9 +33,9 @@
             width: 50px;
             height: 50px;
             background: url(img/person.jpg);
+            margin-top: 240px;
             margin-left: 200px;
             position: absolute;
-            top: 390px;
         }
 
         #gade {
@@ -64,164 +63,141 @@
         <!-- 得分和关于游戏的一些说明 -->
 
         <div id="gade">
-            操作说明：<br>w:跳跃(不要长按)<br>s:&nbsp;蹲下(松手站起)<br>游戏结束后，请刷新重新开始游戏
+            操作说明：<br>w:跳跃(跳起的时候不要按s)<br>s:&nbsp;蹲下(松手站起)<br>游戏结束后，请刷新重新开始游戏
             <br>默认游戏环境为火狐浏览器（若ie浏览器出现bug一概不理会）
             <p>当前得分：0</p>
             <span>最高分：0</span>
         </div>
     </div>
+    <audio src="https://img.tukuppt.com/newpreview_music/09/02/07/5c8a31e2c9f0298727.mp3" loop=true volume="30" hidden="true"
+        autoplay="true"></audio>
 </body>
-<script src="jquery.js"></script>
 <script>
+    // 获取最高分
     var max;
     if (window.localStorage.getItem("max") > 0) {
         max = window.localStorage.getItem("max");
         $("#gade span").html("最高分：" + max);
-    }else{
-        max=0;
+    } else {
+        max = 0;
     }
 
     // 障碍物的生成与移动
-    //第一个障碍物
-    function hindera(num) {
-        //初始位置
-        $("#hinder1").css("left", "400px");
-        //障碍物的样式
+
+
+    // 障碍物
+    var hinder1 = $("#hinder1");
+    var hinder2 = $("#hinder2");
+    var hinder3 = $("#hinder3");
+
+    //障碍物的生成
+    function hinderc(hinder, num) {
+        hinder.css("left", "400px")
+            .css("opacity", 1);
         if (num == 1) {
-            $("#hinder1").css("height", "50px");
-            $("#hinder1").css("top", "240px");
+            hinder.css("height", "50px");
+            hinder.css("top", "240px");
         } else {
-            $("#hinder1").css("height", "250px");
-            $("#hinder1").css("top", "0px");
+            hinder.css("height", "250px");
+            hinder.css("top", "0px");
         }
     }
+
+
+    // 障碍物的移动方法
     var timer;
 
-    function move1(distance, num) {
-        hindera(num);
-        // 障碍物向左移动
-        timer = setInterval(function () {
-            if (distance > 100) {
-                $("#hinder1").css("left", distance + "px");
-                distance--;
-
-            } else {
-                distance = 700;
-                num = Math.round(Math.random());
-                hindera(num);
-            }
-
-            panduan(distance, num);
-        }, 10);
-    }
-
-
-
-    //第二个障碍物
-    function hinderb(num) {
-        $("#hinder2").css("left", "400px");
-        if (num == 1) {
-            $("#hinder2").css("height", "50px");
-            $("#hinder2").css("top", "240px");
-        } else {
-            $("#hinder2").css("height", "250px");
-            $("#hinder2").css("top", "0px");
-        }
-    }
-
-    function move2(distance, num) {
-        hinderb(num);
+    function move(hinder, distance, num, flag) {
+        hinderc(hinder, num);
         var timer = setInterval(function () {
-            if (distance > 50) {
-                $("#hinder2").css("left", distance + "px");
-                distance--;
-
-            } else {
-                distance = 650;
-                num = Math.round(Math.random());
-                hinderb(num);
+            if (distance < flag) {
+                hinder.css("opacity", 0);
             }
-            panduan(distance + 50, num);
-        }, 10);
-    }
-
-    // 第三个障碍物
-    function hinderc(num) {
-        $("#hinder3").css("left", "400px");
-        if (num == 1) {
-            $("#hinder3").css("height", "50px");
-            $("#hinder3").css("top", "240px");
-        } else {
-            $("#hinder3").css("height", "250px");
-            $("#hinder3").css("top", "0px");
-        }
-    }
-
-    function move3(distance, num) {
-        hinderc(num);
-        var timer = setInterval(function () {
             if (distance >= 0) {
-                $("#hinder3").css("left", distance + "px");
+                hinder.css("left", distance + "px")
                 distance--;
             } else {
                 distance = 600;
                 num = Math.round(Math.random());
-                hinderc(num);
+                hinderc(hinder, num);
             }
-            panduan(distance + 100, num);
+            panduan(hinder, num);
         }, 10);
     }
 
-    // 移动
-    function move() {
-        move1(400, Math.round(Math.random()));
-        move2(550, Math.round(Math.random()));
-        move3(700, Math.round(Math.random()));
-    }
-    setTimeout("move()", 2000);
+    // 障碍物移动
+
+    setTimeout(function () {
+        move(hinder1, 400, Math.round(Math.random()), 100);
+        move(hinder2, 550, Math.round(Math.random()), 50);
+        move(hinder3, 700, Math.round(Math.random()), 0);
+    }, 2500);
+
 
     //人物
+    var height;
+    var bug = true;
     $("body").on("keydown", function (e) {
-        if (e.keyCode == 83 && $("#person").css("top").split("px")[0] >= 385) {
-            squat();
-        } else if (e.keyCode == 87 && $("#person").css("top").split("px")[0] <= 390 && $("#person").css("top")
-            .split("px")[0] >=
-            385) {
-            jump();
+        if (bug!=false) {
+            console.log("执行动作")
+            if (e.keyCode == 87 ) {
+                console.log("jump")
+                jump();
+            }
+            if (e.keyCode == 83 ) {
+                console.log("squat")
+                squat();
+            }
+            if (e.keyCode == 108) {
+                console.log("enter")
+                window.location.reload();
+            }
         }
+        
     })
+
     //跳
     function jump() {
+        
         $("#person").animate({
-            "top": "200px",
+            "margin-top": "80px",
             "height": "50px",
-        }, 800, "linear");
+        }, 1000, "linear");
         $("#person").animate({
-            "top": "250px",
+            "margin-top": "80px",
             "height": "50px",
-        }, 250, "linear");
+        }, 500);
+        bug = false;
         $("#person").animate({
-            "top": "390px",
+            "margin-top": "240px",
             "height": "50px",
-        }, 800, "linear");
+        }, 1000, "linear", function () {
+            bug = true;
+        });
     }
+
     // 蹲
     function squat() {
+        
         $("body").on("keydown", function () {
-            $("#person").css("top", "415px")
+            $("#person").css("margin-top", "265px")
                 .css("height", "25px")
         })
+        bug = false;
         $("body").on("keyup", function () {
-            $("#person").css("top", "390px")
+            $("#person").css("margin-top", "240px")
                 .css("height", "50px");
         })
+        bug=true;
     }
 
     //判断是否撞到柱子
     // 计分
     var count = 0;
 
-    function panduan(distance, num) {
+    function panduan(hinder, num) {
+        var distance = hinder.offset().left;
+        height = $("#person").css("margin-top").split("px")[0];
         if ((distance >= 150) && (distance <= 250) && (num == 0) && ($("#person").css("height").split("px")[0] >= 40)) {
             alert("游戏结束\n当前得分为：" + count / 2);
             if (count / 2 > max) {
@@ -236,7 +212,7 @@
             count++;
             $("#gade p").html("当前得分：" + count / 2);
         }
-        if ((distance >= 150) && (distance <= 250) && (num == 1) && ($("#person").css("top").split("px")[0] > 340)) {
+        if ((distance >= 150) && (distance <= 250) && (num == 1) && height > 190) {
             alert("游戏结束\n当前得分为：" + count / 2);
             if (count / 2 > max) {
                 max = count / 2;
