@@ -17,15 +17,15 @@
     var res = confirm("可以作我对象吗");
     while(res==false){
         if(flag){
+            flag=flase;
             alert("我给你买好吃的");
             alert("我给你买漂亮衣服");
             alert("你的，你的，都是你的");
-            flag=flase;
         }else{
+            flag=true;
             alert("房子写你名");
             alert("保大人");
             alert("先救你");
-            flag=true;
         }
         res = confirm("可以作我对象吗");
     }
